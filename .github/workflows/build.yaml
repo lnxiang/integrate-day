@@ -23,8 +23,11 @@ jobs:
     - uses: actions/checkout@v4   
       with:
         repository: lnxiang/monday
-        ref: main
+        ref: ${{ env.branch_name }}
         path: monday
+      env:
+        branch_name: ${{ !contains(github.event.client_payload.data.branches.monday, main) }}
+
     - name: Build project
       run: |
         cd ${{ github.workspace }}/monday
@@ -34,8 +37,11 @@ jobs:
     - uses: actions/checkout@v4   
       with:
         repository: lnxiang/Tuesday
-        ref: main
+        ref: ${{ env.branch_name }}
         path: Tuesday
+      env:
+        branch_name: ${{ !contains(github.event.client_payload.branches.Tuesday, main) }}
+
     - name: Build project
       run: |
         cd ${{ github.workspace }}/Tuesday
