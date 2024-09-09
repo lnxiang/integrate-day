@@ -1,0 +1,43 @@
+name: test multi-trigger
+on:
+  repository_dispatch:
+    types: [dispatch-event]  
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      ACCESS_TOKEN:
+        description: 'A token passed from the caller workflow'
+        required: false
+  push:
+    branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4   
+      with:
+        repository: lnxiang/monday
+        ref: main
+        path: monday
+    - name: Build project
+      run: |
+        cd ${{ github.workspace }}/monday
+        ./build.sh
+      shell: bash
+      
+    - uses: actions/checkout@v4   
+      with:
+        repository: lnxiang/Tuesday
+        ref: main
+        path: Tuesday
+    - name: Build project
+      run: |
+        cd ${{ github.workspace }}/Tuesday
+        ./build.sh 
+      shell: bash
