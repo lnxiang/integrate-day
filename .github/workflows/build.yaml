@@ -10,8 +10,8 @@ on:
         required: false
   push:
     branches: [ "main" ]
-  #pull_request:
-  #  branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -20,17 +20,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: test ||
-      run: |
-        echo ${{ github.event.client_payload.monday }}
-      shell: bash  
     - uses: actions/checkout@v4   
       with:
         repository: lnxiang/monday
         ref: ${{ github.event.client_payload.monday }}
         path: monday
-      #env:
-      #  branch_name: ${{ !contains(github.event.client_payload.monday, main) }}
 
     - name: Build project
       run: |
@@ -43,8 +37,6 @@ jobs:
         repository: lnxiang/Tuesday
         ref: ${{ github.event.client_payload.Tuesday }}
         path: Tuesday
-      #env:
-      #  branch_name: ${{ github.event.client_payload.Tuesday }}
 
     - name: Build project
       run: |
